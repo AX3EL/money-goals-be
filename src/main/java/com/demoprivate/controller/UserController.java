@@ -3,6 +3,7 @@ package com.demoprivate.controller;
 import com.demoprivate.model.User;
 import com.demoprivate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +23,25 @@ public class UserController {
 
     @PostMapping("/registrazione")
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){
-        Map<String, User> userMap = new HashMap<>();
-        User newUser = userService.addUser(user);
-        userMap.put("newUser", newUser);
 
-        if(newUser != null){
-            return ResponseEntity.ok().body(userMap);
+        boolean doubleUser = checkUser(user);
+
+        if(doubleUser){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Utente gia presente");
         }else{
-            return ResponseEntity.notFound().build();
+            Map<String, User> userMap = new HashMap<>();
+            User newUser = userService.addUser(user);
+            userMap.put("newUser", newUser);
+
+            if(newUser != null){
+                return ResponseEntity.ok().body(userMap);
+            }else{
+                return ResponseEntity.internalServerError().build();
+            }
         }
     }
 
+    private boolean checkUser(User user) {
+        return userService.getUserByEmail(user.getEmail()) != null;
+    }
 }
