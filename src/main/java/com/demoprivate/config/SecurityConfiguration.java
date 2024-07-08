@@ -1,6 +1,7 @@
 package com.demoprivate.config;
 
 import com.demoprivate.service.MyUserDetailService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -21,15 +25,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeRequests().antMatchers("/api/v1/registrazione").permitAll()//autorizzazione senza autenticazione per il path register
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/v1/registrazione").permitAll()
+                .antMatchers("/exit").permitAll()
+                .antMatchers("/api/v1/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .authorizeRequests().antMatchers("/exit").permitAll()//come per il register anche per il path exit
-                .anyRequest().authenticated()//tutte le altre richieste , per l'accesso , devono essere autenticate
-                .and()
-                .formLogin().permitAll()
-                .loginPage("/api/v1//log-in")//form login di spring security viene sovrascritta dal path /log
-                .loginProcessingUrl("/login")//l'URL a cui inviare i dati del form di login per l'elaborazione dell'autenticazione.
-                .and().csrf().disable();//disabilito CSRF per semplificare la gestione delle richieste da parte del frontend al backend, 		 evitando la necessità di includere token CSRF corretti in ogni richiesta.
+                .formLogin()
+                .loginProcessingUrl("/api/v1/login")
+                .successHandler((request, response, authentication) -> {
+                    response.setContentType("application/json;charset=UTF-8");
+
+                    Map<String, String> data = new HashMap<>();
+                    data.put("message", "Login effettuato con successo");
+                    data.put("username", authentication.getName());
+                    data.put("auth", String.valueOf(authentication.isAuthenticated()));
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.writeValue(response.getWriter(), data);
+                })
+                .failureHandler((request, response, exception) -> {
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"message\":\"Error: " + exception.getMessage() + "\"}");
+                })
+                .permitAll();
     }
 
 
