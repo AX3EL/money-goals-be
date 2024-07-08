@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // Questi proxy intercettano le chiamate ai metodi per gestire l'inizio, il commit e il rollback delle transazioni.
 public class JPAConfig {
 
-    @Bean
+    @Bean(name = "transactionManager")
     JpaTransactionManager jpaTransactionManager(){
         return new JpaTransactionManager();
     }
