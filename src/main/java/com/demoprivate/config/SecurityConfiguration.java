@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//classe di utilità fornita da Spring Security per semplificare la configurazione della sicurezza
 
     @Autowired
-    private MyUserDetailService userDetailsService;//interfaccia utilizzata da Spring Security per ottenere le informazioni dell'utente dal database; viene implementata dalla classe personalizzata MyUserDetailsService
+    private UserDetailsService userDetailsService;//interfaccia utilizzata da Spring Security per ottenere le informazioni dell'utente dal database; viene implementata dalla classe personalizzata MyUserDetailsService
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {

@@ -38,8 +38,6 @@ public class UserController {
                 return ResponseEntity.internalServerError().build();
             }
         }
-
-        //TODO CHECK CRIPTAZIONE PASSWORD NON FUNZIONANTE
     }
 
     private boolean checkUser(User user) {
