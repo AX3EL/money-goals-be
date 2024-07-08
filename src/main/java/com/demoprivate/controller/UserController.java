@@ -5,11 +5,13 @@ import com.demoprivate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,25 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication != null && authentication.isAuthenticated()){
+            SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+            securityContextLogoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+
+            SecurityContextHolder.clearContext();
+
+            return ResponseEntity.ok().body("Logout effettuato con successo");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Attenzione: utente non autenticato");
+        }
+
+
+    }
 
     @PostMapping("/registrazione")
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){

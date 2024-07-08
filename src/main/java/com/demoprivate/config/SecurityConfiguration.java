@@ -1,6 +1,5 @@
 package com.demoprivate.config;
 
-import com.demoprivate.service.MyUserDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,31 +24,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/registrazione").permitAll()
-                .antMatchers("/exit").permitAll()
                 .antMatchers("/api/v1/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/api/v1/login")
-                .successHandler((request, response, authentication) -> {
-                    response.setContentType("application/json;charset=UTF-8");
+                    .successHandler((request, response, authentication) -> {
+                        response.setContentType("application/json;charset=UTF-8");
+                        Map<String, String> data = new HashMap<>();
+                        data.put("message", "Login effettuato con successo");
+                        data.put("username", authentication.getName());
+                        data.put("auth", String.valueOf(authentication.isAuthenticated()));
 
-                    Map<String, String> data = new HashMap<>();
-                    data.put("message", "Login effettuato con successo");
-                    data.put("username", authentication.getName());
-                    data.put("auth", String.valueOf(authentication.isAuthenticated()));
-
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.writeValue(response.getWriter(), data);
-                })
-                .failureHandler((request, response, exception) -> {
-                    response.setContentType("application/json;charset=UTF-8");
-                    response.getWriter().write("{\"message\":\"Error: " + exception.getMessage() + "\"}");
-                })
-                .permitAll();
+                        ObjectMapper mapper = new ObjectMapper();
+                        mapper.writeValue(response.getWriter(), data);
+                    })
+                    .failureHandler((request, response, exception) -> {
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.setStatus(401);
+                        response.getWriter().write("{\"message\":\"Error: " + exception.getMessage() + "\"}");
+                    }).permitAll()
+                .and()
+                .csrf().disable();
+        //TODO CHECK MALFUNZIONAMENTO TUTTI ENDPOINT
     }
 
 
