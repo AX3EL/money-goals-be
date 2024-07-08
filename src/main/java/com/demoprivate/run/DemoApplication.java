@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableCaching
-@EnableJpaRepositories("com.demoprivate.repository")
-@ComponentScan({"com.demoprivate", "com.demoprivate.repository"})
-@EntityScan("com.demoprivate.model")
+@ComponentScan("com.demoprivate")
 public class DemoApplication {
 
 	public static void main(String[] args) {

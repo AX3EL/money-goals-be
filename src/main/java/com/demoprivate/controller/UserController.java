@@ -25,7 +25,6 @@ public class UserController {
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){
 
         boolean doubleUser = checkUser(user);
-
         if(doubleUser){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Utente gia presente");
         }else{
@@ -39,6 +38,8 @@ public class UserController {
                 return ResponseEntity.internalServerError().build();
             }
         }
+
+        //TODO CHECK CRIPTAZIONE PASSWORD NON FUNZIONANTE
     }
 
     private boolean checkUser(User user) {
