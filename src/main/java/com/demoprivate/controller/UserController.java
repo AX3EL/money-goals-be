@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,9 +38,22 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Attenzione: utente non autenticato");
         }
-
-
     }
+
+    @GetMapping("/cercaUtente/{email}")
+    public ResponseEntity<Object> cercaUtente(@PathVariable("email")String email){
+        User user = userService.getUserByEmail(email);
+        Map<String, String> userMap = new HashMap<>();
+
+        if (user != null) {
+            userMap.put("name", user.getNome());
+            userMap.put("userName", user.getUsername());
+            return ResponseEntity.ok().body(userMap);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");
+        }
+    }
+
 
     @PostMapping("/registrazione")
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){

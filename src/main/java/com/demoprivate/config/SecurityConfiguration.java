@@ -30,10 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
         httpSecurity
                 .cors()
                 .and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/registrazione").permitAll()
                 .antMatchers("/api/v1/login").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/api/v1/login")
@@ -51,10 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
                         response.setContentType("application/json;charset=UTF-8");
                         response.setStatus(401);
                         response.getWriter().write("{\"message\":\"Error: " + exception.getMessage() + "\"}");
-                    }).permitAll()
-                .and()
-                .csrf().disable();
-        //TODO CHECK MALFUNZIONAMENTO TUTTI ENDPOINT
+                    });
     }
 
 
