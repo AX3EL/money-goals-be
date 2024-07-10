@@ -25,6 +25,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response){
+        Map<String, Object> logoutResponse = new HashMap<>();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -33,10 +34,14 @@ public class UserController {
             securityContextLogoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 
             SecurityContextHolder.clearContext();
+        }
 
-            return ResponseEntity.ok().body("Logout effettuato con successo");
+        if(authentication == null){
+            logoutResponse.put("success" , "Logout effettuato con successo");
+            logoutResponse.put("auth", authentication);
+            return ResponseEntity.ok().body(logoutResponse);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Attenzione: utente non autenticato");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Attenzione: errore durante il logout");
         }
     }
 

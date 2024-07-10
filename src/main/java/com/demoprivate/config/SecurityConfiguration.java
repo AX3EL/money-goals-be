@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -38,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
                 .formLogin()
                 .loginProcessingUrl("/api/v1/login")
                     .successHandler((request, response, authentication) -> {
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+
                         response.setContentType("application/json;charset=UTF-8");
                         Map<String, String> data = new HashMap<>();
                         data.put("message", "Login effettuato con successo");
