@@ -23,28 +23,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/logout")
-    public ResponseEntity<Object> logout(HttpServletRequest request, HttpServletResponse response){
-        Map<String, Object> logoutResponse = new HashMap<>();
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication != null && authentication.isAuthenticated()){
-            SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-            securityContextLogoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-
-            SecurityContextHolder.clearContext();
-        }
-
-        if(authentication == null){
-            logoutResponse.put("success" , "Logout effettuato con successo");
-            logoutResponse.put("auth", authentication);
-            return ResponseEntity.ok().body(logoutResponse);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Attenzione: errore durante il logout");
-        }
-    }
-
     @GetMapping("/cercaUtente/{email}")
     public ResponseEntity<Object> cercaUtente(@PathVariable("email")String email){
         User user = userService.getUserByEmail(email);

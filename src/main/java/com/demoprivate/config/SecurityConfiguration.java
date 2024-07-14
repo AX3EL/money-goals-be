@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,7 +55,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
                         response.setContentType("application/json;charset=UTF-8");
                         response.setStatus(401);
                         response.getWriter().write("{\"message\":\"Error: " + exception.getMessage() + "\"}");
-                    });
+                    })
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                .logout()
+                .logoutUrl("/api/v1/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setContentType("application/json;charset=UTF-8");
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("message", "Logout effettuato con successo");
+                    data.put("auth", (authentication));
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.writeValue(response.getWriter(), data);
+                });
     }
 
 
