@@ -1,8 +1,13 @@
 package com.demoprivate.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "utente")
 public class User {
 
@@ -28,9 +33,12 @@ public class User {
     @Column(name = "sesso", nullable = false)
     private String sesso;
 
+    @Column(name = "progressivo")
+    private String progressivo;
+
     public User(){}
 
-    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso) {
+    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso, String progressivo) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -38,62 +46,7 @@ public class User {
         this.cognome = cognome;
         this.dataNascita = dataNascita;
         this.sesso = sesso;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public String getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(String dataNascita) {
-        this.dataNascita = dataNascita;
-    }
-
-    public String getSesso() {
-        return sesso;
-    }
-
-    public void setSesso(String sesso) {
-        this.sesso = sesso;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        this.progressivo = progressivo;
     }
 
     @Override
