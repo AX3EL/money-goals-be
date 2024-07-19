@@ -54,16 +54,16 @@ public class UserController {
             response.addCookie(jwtCookie);
             String userProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();
 
-            User user = userService.getUserByEmail(userDetails.getUsername());
+            /*User user = userService.getUserByEmail(userDetails.getUsername());
             if(user.getProgressivo() == null){
                 userService.updateProgressivo(user.getEmail(), "prog");
             }
-            String newProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();
+            String newProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();*/
 
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             result.put("user", userDetails.getUsername());
-            result.put("prog", newProg);
+            result.put("prog", userProg);
             return ResponseEntity.ok().body(result);
 
         } catch (BadCredentialsException e) {
@@ -75,7 +75,7 @@ public class UserController {
 
     @PutMapping("/logout/{email}")
     public ResponseEntity<?> logout(@PathVariable String email) {
-        userService.updateProgressivo(email, null);
+        /*userService.updateProgressivo(email, null);*/
         return ResponseEntity.ok().body(Collections.singletonMap("success", "Logout effettuato con successo"));
     }
 
