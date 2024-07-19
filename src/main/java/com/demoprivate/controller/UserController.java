@@ -58,11 +58,12 @@ public class UserController {
             if(user.getProgressivo() == null){
                 userService.updateProgressivo(user.getEmail(), "prog");
             }
+            String newProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();
 
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             result.put("user", userDetails.getUsername());
-            result.put("prog", userProg);
+            result.put("prog", newProg);
             return ResponseEntity.ok().body(result);
 
         } catch (BadCredentialsException e) {
