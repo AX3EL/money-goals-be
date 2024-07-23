@@ -1,6 +1,7 @@
 package com.demoprivate.controller;
 
 import com.demoprivate.dto.AuthUser;
+import com.demoprivate.dto.UserImg;
 import com.demoprivate.model.User;
 import com.demoprivate.service.UserService;
 import com.demoprivate.util.JwtUtil;
@@ -89,8 +90,10 @@ public class UserController {
 
             List<User> listaUtenti = userService.readAll();
             for(User u : listaUtenti){
-                if(u.getUsername().equals(username)){
-                    isDuplicated = true;
+                if(!(u.getEmail().equals(email))){
+                    if(u.getUsername().equals(username)){
+                        isDuplicated = true;
+                    }
                 }
             }
 
@@ -110,6 +113,23 @@ public class UserController {
         }
     }
 
+    @PostMapping("/add-img")
+    public ResponseEntity<?> updateImg(@RequestBody UserImg userImg){
+        User user = userService.getUserByEmail(userImg.getEmail());
+
+        if(user != null){
+            userService.updateImg(userImg);
+            String newImg = userService.getUserByEmail(userImg.getEmail()).getFotoProfilo();
+            Map<String, String> res = new HashMap<>();
+            res.put("success" , "Immagine modificata con successo");
+            res.put("img", newImg);
+            return ResponseEntity.ok().body(res);
+
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");
+        }
+    }
+
     @GetMapping("/cercaUtente/{email}")
     public ResponseEntity<Object> cercaUtente(@PathVariable("email")String email){
         User user = userService.getUserByEmail(email);
@@ -118,6 +138,8 @@ public class UserController {
         if (user != null) {
             userMap.put("name", user.getNome());
             userMap.put("userName", user.getUsername());
+            userMap.put("gender", user.getSesso());
+            userMap.put("img", user.getFotoProfilo());
             userMap.put("prog", user.getProgressivo());
             return ResponseEntity.ok().body(userMap);
         } else {

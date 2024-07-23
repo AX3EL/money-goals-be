@@ -1,5 +1,6 @@
 package com.demoprivate.service;
 
+import com.demoprivate.dto.UserImg;
 import com.demoprivate.model.User;
 import com.demoprivate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findById(email).orElse(null);
+    }
+
+    public void updateImg(UserImg userImg){
+        User user = userRepository.findById(userImg.getEmail()).orElse(null);
+        if (user != null) {
+            user.setFotoProfilo(userImg.getImg());
+            userRepository.saveAndFlush(user);
+        }
     }
 
     public void updateUsername(String email, String username){
