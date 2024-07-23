@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -22,6 +23,10 @@ public class UserService {
         String prog = String.valueOf(random.nextInt(90000000) + 10000000);
         user.setProgressivo(prog);
         return userRepository.saveAndFlush(user);
+    }
+
+    public List<User> readAll(){
+        return userRepository.findAll();
     }
 
     public void updateProgressivo(String email, String progressivo) {

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -84,15 +85,28 @@ public class UserController {
 
         User user = userService.getUserByEmail(email);
         if(user != null){
-            userService.updateUsername(email,username);
-            User uptatedUser = userService.getUserByEmail(email);
+            boolean isDuplicated = false;
 
-            Map<String , String> res = new HashMap<>();
-            res.put("success", "Username aggiornato");
-            res.put("username" , uptatedUser.getUsername());
-            return ResponseEntity.ok().body(res);
+            List<User> listaUtenti = userService.readAll();
+            for(User u : listaUtenti){
+                if(u.getUsername().equals(username)){
+                    isDuplicated = true;
+                }
+            }
+
+            if(!isDuplicated){
+                userService.updateUsername(email,username);
+                User uptatedUser = userService.getUserByEmail(email);
+
+                Map<String , String> res = new HashMap<>();
+                res.put("success", "Username aggiornato");
+                res.put("username" , uptatedUser.getUsername());
+                return ResponseEntity.ok().body(res);
+            }else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap("error", "Attenzione: username già presente"));
+            }
         }else{
-            return ResponseEntity.ok().body(Collections.singletonMap("error", "Attenzione: utente non trovato"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Attenzione: utente non trovato"));
         }
     }
 

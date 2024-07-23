@@ -36,9 +36,12 @@ public class User {
     @Column(name = "progressivo")
     private String progressivo;
 
+    @Column(name = "foto_profilo")
+    private String fotoProfilo;
+
     public User(){}
 
-    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso, String progressivo) {
+    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso, String progressivo, String fotoProfilo) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -47,6 +50,7 @@ public class User {
         this.dataNascita = dataNascita;
         this.sesso = sesso;
         this.progressivo = progressivo;
+        this.fotoProfilo = fotoProfilo;
     }
 
     @Override
