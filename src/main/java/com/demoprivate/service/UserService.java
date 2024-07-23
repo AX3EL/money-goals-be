@@ -43,4 +43,11 @@ public class UserService {
         return userRepository.findById(email).orElse(null);
     }
 
+    public void updateUsername(String email, String username){
+        User user = userRepository.findById(email).orElse(null);
+        if (user != null) {
+            user.setUsername(username);
+            userRepository.saveAndFlush(user);
+        }
+    }
 }

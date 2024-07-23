@@ -79,6 +79,23 @@ public class UserController {
         return ResponseEntity.ok().body(Collections.singletonMap("success", "Logout effettuato con successo"));
     }
 
+    @PutMapping("/add-username/{email}/{username}")
+    public ResponseEntity<?> updateUsername(@PathVariable String email,@PathVariable String username) {
+
+        User user = userService.getUserByEmail(email);
+        if(user != null){
+            userService.updateUsername(email,username);
+            User uptatedUser = userService.getUserByEmail(email);
+
+            Map<String , String> res = new HashMap<>();
+            res.put("success", "Username aggiornato");
+            res.put("username" , uptatedUser.getUsername());
+            return ResponseEntity.ok().body(res);
+        }else{
+            return ResponseEntity.ok().body(Collections.singletonMap("error", "Attenzione: utente non trovato"));
+        }
+    }
+
     @GetMapping("/cercaUtente/{email}")
     public ResponseEntity<Object> cercaUtente(@PathVariable("email")String email){
         User user = userService.getUserByEmail(email);
