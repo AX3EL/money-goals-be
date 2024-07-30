@@ -1,6 +1,7 @@
 package com.demoprivate.service;
 
 import com.demoprivate.dto.UserImg;
+import com.demoprivate.dto.UserPssw;
 import com.demoprivate.model.User;
 import com.demoprivate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ public class UserService {
         String prog = String.valueOf(random.nextInt(90000000) + 10000000);
         user.setProgressivo(prog);
         return userRepository.saveAndFlush(user);
+    }
+
+    public void updateUserPssw(UserPssw userPssw){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User user = getUserByEmail(userPssw.getEmail());
+        user.setPassword(passwordEncoder.encode(userPssw.getPassword()));
+        userRepository.saveAndFlush(user);
     }
 
     public List<User> readAll(){

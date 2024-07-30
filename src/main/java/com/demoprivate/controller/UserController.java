@@ -2,6 +2,7 @@ package com.demoprivate.controller;
 
 import com.demoprivate.dto.AuthUser;
 import com.demoprivate.dto.UserImg;
+import com.demoprivate.dto.UserPssw;
 import com.demoprivate.model.User;
 import com.demoprivate.service.UserService;
 import com.demoprivate.util.JwtUtil;
@@ -147,6 +148,22 @@ public class UserController {
         }
     }
 
+    @PutMapping("/update-pssw/{email}/{password}")
+    public ResponseEntity<?> updatePassword(@PathVariable String email,@PathVariable String password) {
+        User user = userService.getUserByEmail(email);
+        UserPssw userPssw = new UserPssw(email, password);
+
+        if(user != null){
+            userService.updateUserPssw(userPssw);
+            Map<String , String> res = new HashMap<>();
+            res.put("success", "Password aggiornata");
+            return ResponseEntity.ok().body(res);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Attenzione: utente non trovato"));
+        }
+    }
+
+
     @PostMapping("/registrazione")
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){
 
@@ -156,9 +173,10 @@ public class UserController {
         }else{
             Map<String, User> userMap = new HashMap<>();
             User newUser = userService.addUser(user);
-            userMap.put("newUser", newUser);
 
             if(newUser != null){
+                newUser.setPassword(null);
+                userMap.put("newUser", newUser);
                 return ResponseEntity.ok().body(userMap);
             }else{
                 return ResponseEntity.internalServerError().build();
