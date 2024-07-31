@@ -39,9 +39,15 @@ public class User {
     @Column(name = "foto_profilo")
     private String fotoProfilo;
 
+    @Column(name = "password_chat")
+    private String chatPassword;
+
+    @Column(name = "password_media")
+    private String mediaPassword;
+
     public User(){}
 
-    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso, String progressivo, String fotoProfilo) {
+    public User(String email, String password, String username, String nome, String cognome, String dataNascita, String sesso, String progressivo, String fotoProfilo, String chatPassword, String mediaPassword) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -51,6 +57,8 @@ public class User {
         this.sesso = sesso;
         this.progressivo = progressivo;
         this.fotoProfilo = fotoProfilo;
+        this.chatPassword = chatPassword;
+        this.mediaPassword = mediaPassword;
     }
 
     @Override
