@@ -38,6 +38,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> readAllByParam(String n){
+        return userRepository.findUsersByParam(n);
+    }
+
     public void updateProgressivo(String email, String progressivo) {
         Optional<User> optionalUser = userRepository.findById(email);
         if (optionalUser.isPresent()) {

@@ -164,6 +164,21 @@ public class UserController {
         }
     }
 
+    @GetMapping("/cercaUtenti/{param}")
+    public ResponseEntity<?> cercaUtenti(@PathVariable("param") String param){
+        List<User> userList = userService.readAllByParam(param);
+
+        if(userList.size() < 1){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Non è stato possibile trovare alcun risultato"));
+        }else{
+            for(User u : userList){
+                u.setPassword(null);
+                u.setChatPassword(null);
+                u.setMediaPassword(null);
+            }
+            return ResponseEntity.ok().body(Collections.singletonMap("success", userList));
+        }
+    }
 
     @PostMapping("/registrazione")
     public ResponseEntity<Object> inserisciUtente(@RequestBody User user){
