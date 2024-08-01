@@ -49,25 +49,26 @@ public class UserController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
             String token = jwtTokenUtil.generateToken(userDetails);
 
-            Cookie jwtCookie = new Cookie("jwt", token);
+            /*Cookie jwtCookie = new Cookie("jwt", token);
             jwtCookie.setHttpOnly(true); // Imposta il cookie come HttpOnly
             jwtCookie.setSecure(false); // Imposta true in produzione
             jwtCookie.setPath("/");
             jwtCookie.setMaxAge(7 * 24 * 60 * 60); // Scade in una settimana
             response.addCookie(jwtCookie);
-            String userProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();
 
-            /*User user = userService.getUserByEmail(userDetails.getUsername());
+            User user = userService.getUserByEmail(userDetails.getUsername());
             if(user.getProgressivo() == null){
                 userService.updateProgressivo(user.getEmail(), "prog");
             }
             String newProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();*/
+            String userProg = userService.getUserByEmail(userDetails.getUsername()).getProgressivo();
 
             Map<String, Object> result = new HashMap<>();
             result.put("token", token);
             result.put("user", userDetails.getUsername());
             result.put("prog", userProg);
             return ResponseEntity.ok().body(result);
+
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Attenzione: credenziali errate"));

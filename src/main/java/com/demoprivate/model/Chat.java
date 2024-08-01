@@ -19,7 +19,7 @@ public class Chat {
     @JoinColumn(name = "email_utente_1", nullable = false)
     private User user_1;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)//restituisce anche i dati della tabella user
     @JoinColumn(name = "email_utente_2", nullable = false)
     private User user_2;
 
