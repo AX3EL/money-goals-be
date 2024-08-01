@@ -26,7 +26,7 @@ public class ChatController {
 
         boolean isPresent = false;
 
-        if(listaChat.size() > 0){
+        if(!listaChat.isEmpty()){
             for(Chat c : listaChat){
                 if(c.getUser_1().equals(chat.getUser_1()) && c.getUser_2().equals(chat.getUser_2())){
                     isPresent = true;
@@ -49,7 +49,7 @@ public class ChatController {
     public ResponseEntity<?> leggiChat(@RequestParam("email") String email){
         List<Chat> chatList = chatService.readAllByMail(email);
 
-        if(chatList.size() < 1){
+        if(chatList.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Non ci sono chat avviate"));
         }else{
             return ResponseEntity.ok().body(Collections.singletonMap("success" , chatList));
