@@ -8,12 +8,12 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.private</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>com.moneyly</groupId>
+	<artifactId>moneyly</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>demo</name>
-	<description>Demo-PRIVATE project</description>
+	<packaging>jar</packaging>
+	<name>moneyly</name>
+	<description>Moneyly - progetto risparmio</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -52,6 +52,12 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
