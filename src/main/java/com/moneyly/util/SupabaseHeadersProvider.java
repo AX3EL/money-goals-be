@@ -13,6 +13,7 @@ public class SupabaseHeadersProvider {
     public HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Accept", "application/json");
         headers.set("apikey", supabaseApiKey);
         headers.set("Authorization", "Bearer " + supabaseApiKey);
         return headers;
