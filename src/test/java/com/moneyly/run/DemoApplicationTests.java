@@ -1,4 +1,4 @@
-package com.demoprivate.run;
+package com.moneyly.run;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

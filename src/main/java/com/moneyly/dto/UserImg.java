@@ -1,4 +1,4 @@
-package com.demoprivate.dto;
+package com.moneyly.dto;
 
 import lombok.Getter;
 import lombok.Setter;
