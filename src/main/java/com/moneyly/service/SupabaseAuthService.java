@@ -25,15 +25,12 @@ public class SupabaseAuthService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${supabase.url}")
-    private String supabaseUrl;
-
     public ApiResponse createUser(User user) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        String url = supabaseUrl + "/rest/v1/utente";
+        String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/utente";
 
         HttpHeaders headers = supabaseHeadersProvider.getHeaders();
 
@@ -60,7 +57,7 @@ public class SupabaseAuthService {
 
     public Map<String, Object> getUserByEmail(String email) {
         Map<String, Object> responseMap = new HashMap<>();
-        String url = supabaseUrl + "/rest/v1/utente?email=eq." + email;
+        String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/utente?email=eq." + email;
 
         HttpHeaders headers = supabaseHeadersProvider.getHeaders();
 
@@ -85,7 +82,7 @@ public class SupabaseAuthService {
 
     public Map<String, Object> getUserByUsername(String username) {
         Map<String, Object> responseMap = new HashMap<>();
-        String url = supabaseUrl + "/rest/v1/utente?username=eq." + username;
+        String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/utente?username=eq." + username;
 
         HttpHeaders headers = supabaseHeadersProvider.getHeaders();
 

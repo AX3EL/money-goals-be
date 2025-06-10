@@ -51,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {//class
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/api/auth/register").permitAll()
                 .antMatchers("/api/auth/login").permitAll()// Permette l'accesso pubblico all'endpoint di autenticazione
+                .antMatchers("/api/wake/ping").permitAll()
                 .anyRequest().authenticated()  // Richiede autenticazione per tutte le altre richieste
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);  // Disabilita la gestione della sessione lato server

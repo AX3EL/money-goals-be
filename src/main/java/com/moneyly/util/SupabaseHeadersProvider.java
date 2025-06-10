@@ -1,5 +1,6 @@
 package com.moneyly.util;
 
+import lombok.Getter;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,10 @@ public class SupabaseHeadersProvider {
 
     @Value("${supabase.api.key}")
     private String supabaseApiKey;
+
+    @Value("${supabase.url}")
+    @Getter
+    private String supabaseUrl;
 
     public HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();

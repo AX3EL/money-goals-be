@@ -73,7 +73,6 @@ public class SupaBaseAuthController {
         }else if(doubleUsername){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username gia presente");
         }else{
-            Map<String, User> userMap = new HashMap<>();
             ApiResponse apiResponse = supabaseAuthService.createUser(user);
 
             if(apiResponse != null && (apiResponse.getStatusCode() == 200 || apiResponse.getStatusCode() == 201)){
