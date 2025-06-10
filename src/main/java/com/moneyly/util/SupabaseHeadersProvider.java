@@ -21,6 +21,7 @@ public class SupabaseHeadersProvider {
         headers.set("Accept", "application/json");
         headers.set("apikey", supabaseApiKey);
         headers.set("Authorization", "Bearer " + supabaseApiKey);
+        headers.set("Connection", "close");
         return headers;
     }
 }

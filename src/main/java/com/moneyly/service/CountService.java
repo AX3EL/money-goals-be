@@ -25,8 +25,8 @@ public class CountService {
     @Autowired
     SupabaseHeadersProvider supabaseHeadersProvider;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
+    @Autowired
+    private RestTemplate restTemplate;
     public ApiResponse createConto(Conto conto) {
 
         String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/conto";

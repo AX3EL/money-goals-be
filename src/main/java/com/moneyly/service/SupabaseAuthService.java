@@ -23,7 +23,8 @@ public class SupabaseAuthService {
     @Autowired
     SupabaseHeadersProvider supabaseHeadersProvider;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     public ApiResponse createUser(User user) {
 
