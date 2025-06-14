@@ -14,7 +14,7 @@ public class CorsConfiguration implements WebMvcConfigurer {// l'implementazione
         registry.addMapping("/**")//Specifioc che le regole CORS saranno applicate a tutte le risorse del server e tutti i percorsi dell'applicazione
                 .allowedOrigins("*") //unico URL da cui possono provenire le richieste
                 .allowCredentials(false)//le richieste possono includere credenziali (come i cookie) quando vengono inviate al server
-                .allowedMethods("GET", "POST", "PUT", "DELETE")//In questo caso, sono consentiti i metodi "GET", "POST", "PUT" e "DELETE"
+                .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE")//In questo caso, sono consentiti i metodi "GET", "POST", "PUT" e "DELETE"
                 .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Authorization", "Origin", "Access-Control-Request-Method",
                         "Access-Control-Request-Headers")//definisce gli header che il server acconsente ad accettare nelle richieste CORS
                 .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");//definisce gli header che il server è disposto a esporre nelle risposte CORS

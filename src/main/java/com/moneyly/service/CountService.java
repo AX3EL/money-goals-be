@@ -1,6 +1,5 @@
 package com.moneyly.service;
 
-import com.moneyly.dto.ContoDTO;
 import com.moneyly.model.ApiResponse;
 import com.moneyly.model.Conto;
 import com.moneyly.model.User;
@@ -31,6 +30,7 @@ public class CountService {
 
         String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/conto";
         HttpHeaders headers = supabaseHeadersProvider.getHeaders();
+        headers.add("Prefer", "return=representation");
 
         // Corpo della richiesta
         Map<String, Object> requestBody = new HashMap<>();
@@ -80,6 +80,37 @@ public class CountService {
                 responseMap.put("counts", contoArrayList);
             } else {
                 responseMap.put("error", "Non sono presenti conti per l'utente " + idUtente);
+            }
+        }else{
+            responseMap.put("error", "Errore durante la ricerca");
+        }
+
+        return responseMap;
+    }
+
+    public Map<String, Object> getCountById(UUID idConto) {
+        Map<String, Object> responseMap = new HashMap<>();
+        String url = supabaseHeadersProvider.getSupabaseUrl() + "/rest/v1/conto?id=eq." + idConto;
+
+        HttpHeaders headers = supabaseHeadersProvider.getHeaders();
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<Conto[]> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                request,
+                Conto[].class
+        );
+
+        Conto[] countList = response.getBody();
+        if(countList != null){
+            ArrayList<Conto> contoArrayList = new ArrayList<>(Arrays.asList(countList));
+
+            if (countList.length > 0) {
+                responseMap.put("count", contoArrayList.get(0));
+            } else {
+                responseMap.put("error", "Conto non presente");
             }
         }else{
             responseMap.put("error", "Errore durante la ricerca");

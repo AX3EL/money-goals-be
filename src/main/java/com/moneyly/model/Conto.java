@@ -33,11 +33,14 @@ public class Conto {
     @JsonProperty("conto_primario")
     private boolean primario;
 
+    @JsonProperty("obiettivo_id")
+    private UUID obiettivoId;
+
     public Conto() {
         // Costruttore vuoto
     }
 
-    public Conto(UUID id, String nomeConto, String tipoConto, BigDecimal budgetIniziale, BigDecimal saldo, UUID utenteId, boolean primario) {
+    public Conto(UUID id, String nomeConto, String tipoConto, BigDecimal budgetIniziale, BigDecimal saldo, UUID utenteId, boolean primario, UUID obiettivoId) {
         this.id = id;
         this.nomeConto = nomeConto;
         this.tipoConto = tipoConto;
@@ -45,5 +48,6 @@ public class Conto {
         this.saldo = saldo;
         this.utenteId = utenteId;
         this.primario = primario;
+        this.obiettivoId = obiettivoId;
     }
 }
